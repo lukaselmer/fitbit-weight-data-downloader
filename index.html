@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Your Weight</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+  <!-- <script src="main.js"></script> -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script>
+    async function plotData() {
+      const data = await (await fetch('data/combined.json')).json();
+      dates = data.map(value => value.date + ' ' + value.time)
+      weight = data.map(value => value.weight)
+      fat = data.map(value => value.fat)
+      bmi = data.map(value => value.bmi)
+      const plotData = [
+        {
+          name: 'Weight',
+          x: dates,
+          y: weight,
+        }, {
+          name: 'Fat',
+          x: dates,
+          y: fat,
+          yaxis: 'y2'
+        }
+      ];
+
+      const layout = {
+        yaxis: { title: 'kg' },
+        yaxis2: {
+          title: '%',
+          overlaying: 'y',
+          side: 'right'
+        },
+        margin: {
+          l: 40,
+          r: 10,
+          b: 40,
+          t: 10,
+          pad: 4
+        },
+      };
+
+      const canvas = document.getElementById('graph');
+      Plotly.plot(canvas, plotData, layout);
+    }
+
+    function extract(data, field) {
+      data.map(value => value[field])
+    }
+
+    document.addEventListener("DOMContentLoaded", plotData);
+  </script>
+
+</head>
+
+<body style="margin:0;">
+  <div id="graph" style="position:fixed;width:100%;height:100%;"></div>
+</body>
+
+</html>

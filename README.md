@@ -18,3 +18,10 @@ OAUTH_TOKEN=xxxxxx ruby generate.rb
 ```
 
 which will download all years and store them in data/#{year}.json, and finally combine them all into one JSON file.
+
+## Viewing Your Data
+
+```sh
+(sleep 1 && open http://127.0.0.1:8080 ) &
+npx http-server -c-1 .
+```
